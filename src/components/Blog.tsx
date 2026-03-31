@@ -10,7 +10,12 @@ interface BlogPost {
   featured: boolean;
 }
 
-export default function Blog({ posts }: { posts: BlogPost[] }) {
+interface BlogProps {
+  posts: BlogPost[];
+  theme: 'light' | 'dark';
+}
+
+export default function Blog({ posts, theme }: BlogProps) {
   const displayPosts = posts.length > 0
     ? posts.slice(0, 6)
     : [
@@ -52,28 +57,42 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
   };
 
   const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
+    const darkColors: Record<string, string> = {
       'DFIR': 'bg-blue-900/30 text-blue-400 border-blue-700',
       'Malware Analysis': 'bg-red-900/30 text-red-400 border-red-700',
       'Threat Hunting': 'bg-yellow-900/30 text-yellow-400 border-yellow-700',
       'Security Research': 'bg-purple-900/30 text-purple-400 border-purple-700',
     };
-    return colors[category] || 'bg-slate-800/50 text-slate-400 border-slate-700';
+    
+    const lightColors: Record<string, string> = {
+      'DFIR': 'bg-blue-100 text-blue-700 border-blue-300',
+      'Malware Analysis': 'bg-red-100 text-red-700 border-red-300',
+      'Threat Hunting': 'bg-yellow-100 text-yellow-700 border-yellow-300',
+      'Security Research': 'bg-purple-100 text-purple-700 border-purple-300',
+    };
+    
+    const colors = theme === 'dark' ? darkColors : lightColors;
+    return colors[category] || (theme === 'dark' ? 'bg-slate-800/50 text-slate-400 border-slate-700' : 'bg-slate-200 text-slate-600 border-slate-300');
   };
 
+  const bgSectionClass = theme === 'dark' ? 'bg-slate-800/30' : 'bg-slate-100/50';
+  const textHeadingClass = theme === 'dark' ? 'text-slate-50' : 'text-slate-900';
+  const textSubClass = theme === 'dark' ? 'text-slate-400' : 'text-slate-600';
+  const cardBgClass = theme === 'dark' ? 'bg-slate-700/40 border-slate-600' : 'bg-slate-200/40 border-slate-300';
+  const textBodyClass = theme === 'dark' ? 'text-slate-400' : 'text-slate-600';
+
   return (
-    <section id="blog" className="py-20 px-4 bg-slate-800/30">
+    <section className={`py-20 px-4 ${bgSectionClass}`}>
       <div className="max-w-5xl mx-auto">
         <div className="mb-12">
-          <h2 className="text-4xl font-bold mb-4 text-slate-50">Blog</h2>
-          <p className="text-slate-400 font-mono text-sm">security research and writeups</p>
+          <h2 className={`text-4xl font-bold mb-4 ${textHeadingClass}`}>Blog</h2>
         </div>
 
         <div className="space-y-6">
           {displayPosts.map((post) => (
             <article
               key={post.id}
-              className="group bg-slate-700/40 border border-slate-600 rounded-lg p-6 hover:border-cyan-400 transition"
+              className={`group ${cardBgClass} border rounded-lg p-6 hover:border-cyan-400 transition`}
             >
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-3">
                 <div className="flex items-center gap-3">
@@ -84,18 +103,18 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
                   >
                     {post.category}
                   </span>
-                  <div className="flex items-center gap-2 text-slate-500 font-mono text-xs">
+                  <div className={`flex items-center gap-2 font-mono text-xs ${theme === 'dark' ? 'text-slate-500' : 'text-slate-500'}`}>
                     <Calendar className="w-3 h-3" />
                     {formatDate(post.created_at)}
                   </div>
                 </div>
               </div>
 
-              <h3 className="text-xl font-bold mb-3 text-slate-50 group-hover:text-cyan-400 transition">
+              <h3 className={`text-xl font-bold mb-3 ${textHeadingClass} group-hover:text-cyan-400 transition`}>
                 {post.title}
               </h3>
 
-              <p className="text-slate-400 mb-4">{post.excerpt}</p>
+              <p className={`${textBodyClass} mb-4`}>{post.excerpt}</p>
 
               <a
                 href={`#blog/${post.slug}`}
@@ -109,7 +128,7 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
         </div>
 
         {posts.length === 0 && (
-          <div className="text-center py-8 text-slate-500">
+          <div className={`text-center py-8 ${theme === 'dark' ? 'text-slate-500' : 'text-slate-500'}`}>
             <p className="font-mono text-sm">Blog posts will appear here as you publish them</p>
           </div>
         )}

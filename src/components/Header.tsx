@@ -1,88 +1,98 @@
 import { useState } from 'react';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X, Moon, Sun } from 'lucide-react';
 
-export default function Header() {
+interface HeaderProps {
+  onThemeToggle: () => void;
+  theme: 'light' | 'dark';
+  onNavClick: (page: 'home' | 'about' | 'projects' | 'blog' | 'contact') => void;
+  currentPage: 'home' | 'about' | 'projects' | 'blog' | 'contact';
+}
+
+export default function Header({ onThemeToggle, theme, onNavClick, currentPage }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const scrollToSection = (id: string) => {
+  const navItems = [
+    { label: 'About', id: 'about' as const },
+    { label: 'Projects', id: 'projects' as const },
+    { label: 'Blog', id: 'blog' as const },
+  ];
+
+  const handleNavClick = (id: 'home' | 'about' | 'projects' | 'blog' | 'contact') => {
     setIsOpen(false);
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth' });
+    onNavClick(id);
   };
 
+  const bgClass = theme === 'dark' 
+    ? 'bg-slate-800/80 border-slate-700' 
+    : 'bg-white/80 border-slate-200';
+  
+  const textClass = theme === 'dark' 
+    ? 'text-slate-50' 
+    : 'text-slate-900';
+  
+  const navTextClass = theme === 'dark' 
+    ? 'text-slate-300 hover:text-cyan-400' 
+    : 'text-slate-700 hover:text-cyan-600';
+
   return (
-    <header className="fixed top-0 w-full bg-slate-800/80 backdrop-blur-md border-b border-slate-700 z-50">
+    <header className={`fixed top-0 w-full ${bgClass} backdrop-blur-md border-b z-50`}>
       <nav className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <button
-          onClick={() => scrollToSection('hero')}
+          onClick={() => handleNavClick('home')}
           className="flex items-center gap-2 group"
         >
-          <Shield className="w-6 h-6 text-cyan-500 group-hover:text-cyan-400 transition" />
-          <span className="font-mono font-bold text-lg text-slate-50">portfolio</span>
+          <span className={`font-mono font-bold text-lg ${textClass}`}>yehsure</span>
         </button>
 
         <div className="hidden md:flex items-center gap-8">
-          <button
-            onClick={() => scrollToSection('about')}
-            className="text-slate-300 hover:text-cyan-400 transition font-mono text-sm"
-          >
-            about
-          </button>
-          <button
-            onClick={() => scrollToSection('projects')}
-            className="text-slate-300 hover:text-cyan-400 transition font-mono text-sm"
-          >
-            projects
-          </button>
-          <button
-            onClick={() => scrollToSection('blog')}
-            className="text-slate-300 hover:text-cyan-400 transition font-mono text-sm"
-          >
-            blog
-          </button>
-          <button
-            onClick={() => scrollToSection('contact')}
-            className="text-slate-300 hover:text-cyan-400 transition font-mono text-sm"
-          >
-            contact
-          </button>
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`${navTextClass} transition font-mono text-sm ${
+                currentPage === item.id ? 'text-cyan-400 font-bold' : ''
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-slate-300 hover:text-cyan-400"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onThemeToggle}
+            className={`p-2 rounded-lg transition ${
+              theme === 'dark' 
+                ? 'bg-slate-700 text-yellow-400 hover:bg-slate-600' 
+                : 'bg-slate-200 text-slate-800 hover:bg-slate-300'
+            }`}
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={`md:hidden ${navTextClass} transition`}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
 
       {isOpen && (
-        <div className="md:hidden bg-slate-800/95 border-t border-slate-700">
+        <div className={`md:hidden ${theme === 'dark' ? 'bg-slate-800/95 border-slate-700' : 'bg-white/95 border-slate-200'} border-t`}>
           <div className="px-4 py-4 space-y-4 font-mono text-sm">
-            <button
-              onClick={() => scrollToSection('about')}
-              className="block text-slate-300 hover:text-cyan-400 transition"
-            >
-              about
-            </button>
-            <button
-              onClick={() => scrollToSection('projects')}
-              className="block text-slate-300 hover:text-cyan-400 transition"
-            >
-              projects
-            </button>
-            <button
-              onClick={() => scrollToSection('blog')}
-              className="block text-slate-300 hover:text-cyan-400 transition"
-            >
-              blog
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="block text-slate-300 hover:text-cyan-400 transition"
-            >
-              contact
-            </button>
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`block ${navTextClass} transition ${
+                  currentPage === item.id ? 'text-cyan-400 font-bold' : ''
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
         </div>
       )}

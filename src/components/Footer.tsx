@@ -1,13 +1,15 @@
-export default function Footer() {
-  const currentYear = new Date().getFullYear();
+interface FooterProps {
+  theme: 'light' | 'dark';
+}
+
+export default function Footer({ theme }: FooterProps) {
+  const textClass = theme === 'dark' ? 'text-slate-400' : 'text-slate-600';
+  const bgClass = theme === 'dark' ? 'bg-slate-900/50' : 'bg-slate-100';
 
   return (
-    <footer className="border-t border-slate-800 bg-slate-900/50 py-8 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-slate-400 text-sm font-mono">
-          <p>© {currentYear} Cybersecurity Portfolio. All rights reserved.</p>
-          <p>Built with React, TypeScript, and Tailwind CSS</p>
-        </div>
+    <footer className={`${bgClass} py-8 px-4 border-t ${theme === 'dark' ? 'border-slate-700' : 'border-slate-300'}`}>
+      <div className="max-w-5xl mx-auto text-center">
+        <p className={`font-mono text-sm ${textClass}`}>© 2026 yehsure. All rights reserved.</p>
       </div>
     </footer>
   );

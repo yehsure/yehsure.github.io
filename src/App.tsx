@@ -16,6 +16,8 @@ const supabase = createClient(
 export default function App() {
   const [projects, setProjects] = useState<any[]>([]);
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'projects' | 'blog' | 'contact'>('home');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,19 +31,38 @@ export default function App() {
     };
 
     fetchData();
+
+    // Load theme from localStorage, default to 'dark'
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    setTheme(savedTheme || 'dark');
   }, []);
 
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  const bgClass = theme === 'dark' 
+    ? 'min-h-screen bg-slate-900 text-slate-50' 
+    : 'min-h-screen bg-white text-slate-900';
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50">
-      <Header />
+    <div className={bgClass}>
+      <Header 
+        onThemeToggle={toggleTheme} 
+        theme={theme} 
+        onNavClick={setCurrentPage}
+        currentPage={currentPage}
+      />
       <main>
-        <Hero />
-        <About />
-        <Projects projects={projects} />
-        <Blog posts={blogPosts} />
-        <Contact />
+        {currentPage === 'home' && <Hero onNavClick={setCurrentPage} theme={theme} />}
+        {currentPage === 'about' && <About theme={theme} />}
+        {currentPage === 'projects' && <Projects projects={projects} theme={theme} />}
+        {currentPage === 'blog' && <Blog posts={blogPosts} theme={theme} />}
+        {currentPage === 'contact' && <Contact theme={theme} />}
       </main>
-      <Footer />
+      <Footer theme={theme} />
     </div>
   );
 }
