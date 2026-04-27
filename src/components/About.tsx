@@ -36,14 +36,14 @@ export default function About({ theme }: AboutProps) {
       }
     },
     vi: {
-      intro: "Xin chào, tôi tên là Nguyễn Tấn Phát (hay còn gọi là yehsure). Hiện tôi là sinh viên chuyên ngành An toàn thông tin tại Học viện Công nghệ Bưu chính Viễn thông (PTIT). Hành trình của tôi trong thế giới an ninh mạng được thúc đẩy bởi sự tò mò — mong muốn thấu hiểu cấu trúc bên trong của các hệ thống và cách thức bảo vệ chúng khi gặp sự cố.",
+      intro: "Xin chào, mình tên là Nguyễn Tấn Phát (hay còn gọi là yehsure). Hiện mình là sinh viên chuyên ngành An toàn thông tin tại Học viện Công nghệ Bưu chính Viễn thông (PTIT). Hành trình của mình trong thế giới an ninh mạng được thúc đẩy bởi sự tò mò — mong muốn thấu hiểu cấu trúc bên trong của các hệ thống và cách thức bảo vệ chúng khi gặp sự cố.",
       experience: {
         title: "Kinh nghiệm & CTF",
-        text: "Tôi đang thi đấu CTF cùng đội của mình là DWY_YK. Dù có thể tham gia ở hầu hết các mảng, nhưng tôi đặc biệt hứng thú với Digital Forensics và Reverse Engineering. Việc khôi phục các dấu vết số, dịch ngược và phân tích mã máy để thấu hiểu tường tận cách hoạt động của phần mềm luôn mang lại cho tôi một sự lôi cuốn đặc biệt."
+        text: "Mình đang thi đấu CTF cùng đội của mình là DWY_YK. Dù có thể tham gia ở hầu hết các mảng, nhưng mình đặc biệt hứng thú với Digital Forensics và Reverse Engineering. Việc khôi phục các dấu vết số, dịch ngược và phân tích mã máy để thấu hiểu tường tận cách hoạt động của phần mềm luôn mang lại cho mình một sự lôi cuốn đặc biệt."
       },
       goals: {
         title: "Định hướng tương lai",
-        text: "Hiện tại, tôi đang tập trung vào mặt phòng thủ, hướng tới trở thành một SOC Analyst, Incident Responder hoặc Malware Analyst. Tôi sử dụng website này để đăng tải các dự án cá nhân, hướng dẫn lab và báo cáo nghiên cứu. Đây là cách tôi tích lũy kinh nghiệm và chuẩn bị cho hành trình bước vào ngành an ninh mạng chuyên nghiệp."
+        text: "Hiện tại, mình đang tập trung vào mặt phòng thủ, hướng tới trở thành một SOC Analyst, Incident Responder hoặc Malware Analyst. Mình sử dụng website này để đăng tải các dự án cá nhân, hướng dẫn lab và báo cáo nghiên cứu. Đây là cách mình tích lũy kinh nghiệm và chuẩn bị cho hành trình bước vào ngành an ninh mạng chuyên nghiệp."
       }
     }
   };
